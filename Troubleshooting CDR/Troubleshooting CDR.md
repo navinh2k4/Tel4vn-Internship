@@ -1,5 +1,5 @@
 
-# 1. Lỗi không hiển thị thông tin chi tiết CDR
+# 1. Lỗi không hiển thị thông tin chi tiết lịch sử cuộc gọi 
 
 ![](_assets/Pasted%20image%2020260115172225.png)
 
