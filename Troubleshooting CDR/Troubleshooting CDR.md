@@ -6,19 +6,39 @@
 
 - Mặc dù hệ thống đã ghi nhận cuộc gọi (kiểm tra trong database `v_xml_cdr` có dữ liệu), nhưng giao diện **Apps -> Call Detail Records** vẫn hiển thị trắng trang hoặc không có dữ liệu.
 
-![](_assets/Pasted%20image%2020260115172225.png)*Hình 1: Giao diện CDR bị lỗi trắng trang ban đầu*
+<div align="center">
+  <img src="_assets/Pasted%20image%2020260115172225.png" width="100%">
+  <p><i>Hình 1: Giao diện CDR bị lỗi trắng trang ban đầu</i></p>
+</div>
+
+<br>
 
 - Đã thử gọi test nhiều cuộc nhưng UI vẫn không cập nhật.
 
 **Minh chứng lỗi:** _Giao diện CDR trống trơn:_
 
-![](_assets/Pasted%20image%2020260115173604.png)*Hình 2: Sau khi gọi điện test thì giao diện CDR vẫn bị lỗi trắng như ban đầu*
+<div align="center">
+  <img src="_assets/Pasted%20image%2020260115173604.png" width="100%">
+  <p><i>Hình 2: Sau khi gọi điện test thì giao diện CDR vẫn bị lỗi trắng như ban đầu</i></p>
+</div>
+
+<br>
 
 _Trong khi Database vẫn có dữ liệu:_ `select * from v_xml_cdr;`
 
-![](_assets/Pasted%20image%2020260115173415.png)*Hình 3: Trước khi gọi điện test thì trong bảng v_xml_cdr có 3 bản ghi*
+<div align="center">
+  <img src="_assets/Pasted%20image%2020260115173415.png" width="100%">
+  <p><i>Hình 3: Trước khi gọi điện test thì trong bảng v_xml_cdr có 3 bản ghi</i></p>
+</div>
 
-![](_assets/Pasted%20image%2020260115173639.png)*Hình 4: Sau khi gọi điện test thì trong bảng v_xml_cdr có 4 bản ghi*
+<br>
+
+<div align="center">
+  <img src="_assets/Pasted%20image%2020260115173639.png" width="100%">
+  <p><i>Hình 4: Sau khi gọi điện test thì trong bảng v_xml_cdr có 4 bản ghi</i></p>
+</div>
+
+<br>
 
 ## 2. Quy trình phân tích 
 
@@ -32,9 +52,19 @@ tail -f /var/log/nginx/access.log
 
 **Kết quả:**
 
-![](_assets/Pasted%20image%2020260120215336.png)*Hình 5: Log Nginx hiện thị theo thời gian thực*
+<div align="center">
+  <img src="_assets/Pasted%20image%2020260120215336.png" width="100%">
+  <p><i>Hình 5: Log Nginx hiện thị theo thời gian thực</i></p>
+</div>
 
-![](_assets/Pasted%20image%2020260120215257.png)*Hình 6: Chi tiết rõ hơn log Nginx cho thấy dịch vụ hoạt động ổn định*
+<br>
+
+<div align="center">
+  <img src="_assets/Pasted%20image%2020260120215257.png" width="100%">
+  <p><i>Hình 6: Chi tiết rõ hơn log Nginx cho thấy dịch vụ hoạt động ổn định</i></p>
+</div>
+
+<br>
 
 > **Nhận định:** HTTP Status trả về **200 OK**. Chứng tỏ Web Server hoạt động bình thường, Code PHP đã được thực thi. Vấn đề nằm ở tầng ứng dụng hoặc Database.
 
@@ -100,7 +130,12 @@ tail -f /var/log/postgresql/postgresql-12-main.log
 
 ```
 
-![](_assets/Pasted%20image%2020260120215714.png)*Hình 7: Log Postgres xuất hiện lỗi theo thời gian thực (Khi thao tác truy cập App --> Call Detail Records trên web)*
+<div align="center">
+  <img src="_assets/Pasted%20image%2020260120215714.png" width="100%">
+  <p><i>Hình 7: Log Postgres xuất hiện lỗi theo thời gian thực (Khi thao tác truy cập App --> Call Detail Records trên web)</i></p>
+</div>
+
+<br>
 
 ## 3. Nguyên nhân gốc rễ 
 
@@ -138,7 +173,12 @@ CREATE TABLE call_rate (
 CREATE INDEX idx_call_rate_call_id ON call_rate (call_id);
 ```
 
-![](_assets/Pasted%20image%2020260120220133.png)*Hình 8: Tạo bảng call_rate và index trong bảng*
+<div align="center">
+  <img src="_assets/Pasted%20image%2020260120220133.png" width="100%">
+  <p><i>Hình 8: Tạo bảng call_rate và index trong bảng</i></p>
+</div>
+
+<br>
 
 **Kiểm tra lại cấu trúc bảng:**
 ```
@@ -147,15 +187,31 @@ CREATE INDEX idx_call_rate_call_id ON call_rate (call_id);
 
 _Kết quả:_
 
-![](_assets/Pasted%20image%2020260120220957.png)*Hình 9: Kết quả tạo bảng call_rate thành công*
+<div align="center">
+  <img src="_assets/Pasted%20image%2020260120220957.png" width="100%">
+  <p><i>Hình 9: Kết quả tạo bảng call_rate thành công</i></p>
+</div>
+
+<br>
+
 ## 5. Kết quả 
 
 Sau khi tạo bảng xong, Refresh lại trang CDR. Hệ thống đã hiển thị đầy đủ lịch sử cuộc gọi.
 
 **Giao diện hiển thị thành công:**
 
-![](_assets/Pasted%20image%2020260120220254.png)*Hình 10: Kết quả UI đã hiển thị thông tin lịch sử cuộc gọi*
+<div align="center">
+  <img src="_assets/Pasted%20image%2020260120220254.png" width="100%">
+  <p><i>Hình 10: Kết quả UI đã hiển thị thông tin lịch sử cuộc gọi</i></p>
+</div>
+
+<br>
 
 _Chi tiết cuộc gọi:_
 
-![](_assets/Pasted%20image%2020260120220352.png)*Hình 11: Thông tin chi tiết lịch sử cuộc gọi*
+<div align="center">
+  <img src="_assets/Pasted%20image%2020260120220352.png" width="100%">
+  <p><i>Hình 11: Thông tin chi tiết lịch sử cuộc gọi</i></p>
+</div>
+
+<br>
