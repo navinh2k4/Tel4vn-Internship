@@ -1,5 +1,5 @@
-![](_assets/Pasted%20image%2020260120182719.png)
-# 1. Ban đầu lỗi
+
+# 1. Lỗi không hiển thị thông tin chi tiết CDR
 
 ![](_assets/Pasted%20image%2020260115172225.png)
 
